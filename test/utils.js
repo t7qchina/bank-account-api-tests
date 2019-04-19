@@ -18,7 +18,7 @@ module.exports = function() {
 	}
 
 	this.randomString = function (len, charSet) {
-		charSet = charSet || ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		var randomString = '';
 		for (var i = 0; i < len; i++) {
 			var randomPoz = getRandomInt(0, charSet.length)
@@ -38,10 +38,23 @@ module.exports = function() {
 		return string + this;
 	};
 
-	this.getSwiftCode = function (country_code)
+	this.getSwiftCode = function(country_code)
 	{
 		return randomString(getRandomElement([6, 9])).insert(4, country_code)
 	}
+	
+	this.getPayload = function() {
+		var payload = {
+			"payment_method": getRandomElement(["LOCAL","SWIFT"]),
+			"bank_country_code": getRandomElement(["US", "AU", "CN"]),
+			"account_name": randomString(getRandomInt(2, 10)),
+			"account_number": randomString(getRandomInt(8, 9)),
+			"bsb": randomString(6),
+			"aba": randomString(9)
+		}
+		payload.swift_code = getSwiftCode(payload.bank_country_code)
+		return payload;
+	};
 
 	this.postAndVerify = function (obj, expectedStatus, expectedBody, done) {
 		chai.request('http://preview.airwallex.com:30001').post('/bank')
