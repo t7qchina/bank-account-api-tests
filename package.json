@@ -1,0 +1,13 @@
+{
+  "name": "bank-api-tests",
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "assert": "1.4.1",
+    "chai": "4.2.0",
+    "chai-http": "4.2.1",
+    "chai-json-equal": "0.0.1",
+    "mocha": "6.1.3"
+  }
+}
