@@ -66,7 +66,7 @@ module.exports = function() {
 					done();
 				}
 				catch (e) {
-					done(new Error("\n\tPost: " + JSON.stringify(obj) + "\n\tActual: " + JSON.stringify(res.body) + "\n\tExpected: "+ JSON.stringify(expectedBody)));
+					done(e)
 				}
 		});
 	}

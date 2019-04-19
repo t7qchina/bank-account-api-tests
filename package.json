@@ -2,13 +2,14 @@
   "name": "bank-api-tests",
   "private": true,
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --reporter mochawesome --reporter-options reportDir=report,reportFilename=results,json=false,quiet=true"
   },
   "devDependencies": {
     "assert": "^1.4.1",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "chai-json-equal": "^0.0.1",
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "mochawesome": "^3.1.2"
   }
 }
