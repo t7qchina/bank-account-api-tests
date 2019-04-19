@@ -83,9 +83,9 @@ describe('Test Submit Bank Account API', function() {
         });
 
         describe('Verify Invalid Filed Length Logics', function() {
-            it('Verify Long Account Name Length (11 - 20)', function(done) {
+            it('Verify Long Account Name Length (11)', function(done) {
                 payload = getPayload();
-                payload.account_name = randomString(getRandomInt(11, 20));
+                payload.account_name = randomString(11);
                 postAndVerify(payload, 400, {"error":"Length of account_name should be between 2 and 10"}, done);
             });
 
@@ -95,47 +95,47 @@ describe('Test Submit Bank Account API', function() {
                 postAndVerify(payload, 400, {"error":"Length of account_name should be between 2 and 10"}, done);
             });
 
-            it('Verify Long US Account Number Length(18 - 20)', function(done) {
+            it('Verify Long US Account Number Length(18)', function(done) {
                 payload = getPayload();
                 payload.payment_method = "LOCAL";
                 payload.bank_country_code = "US";
-                payload.account_number = randomString(getRandomInt(18, 20));
+                payload.account_number = randomString(18);
                 payload.swift_code = getSwiftCode(payload.bank_country_code);
                 postAndVerify(payload, 400, {"error":"Length of account_number should be between 1 and 17 when bank_country_code is \'US\'"}, done);
             });
 
-            it('Verify Short AU Account Number Length(1 - 5)', function(done) {
+            it('Verify Short AU Account Number Length(5)', function(done) {
                 payload = getPayload();
                 payload.payment_method = "LOCAL";
                 payload.bank_country_code = "AU";
-                payload.account_number = randomString(getRandomInt(1, 5));
+                payload.account_number = randomString(5);
                 payload.swift_code = getSwiftCode(payload.bank_country_code);
                 postAndVerify(payload, 400, {"error":"Length of account_number should be between 6 and 9 when bank_country_code is \'AU\'"}, done);
             });
 
-            it('Verify Long AU Account Number Length(10 - 20)', function(done) {
+            it('Verify Long AU Account Number Length(10)', function(done) {
                 payload = getPayload();
                 payload.payment_method = "LOCAL";
                 payload.bank_country_code = "AU";
-                payload.account_number = randomString(getRandomInt(10, 20));
+                payload.account_number = randomString(10);
                 payload.swift_code = getSwiftCode(payload.bank_country_code);
                 postAndVerify(payload, 400, {"error":"Length of account_number should be between 6 and 9 when bank_country_code is \'AU\'"}, done);
             });
 
-            it('Verify CN Account Number Length(1 - 7)', function(done) {
+            it('Verify CN Account Number Length(7)', function(done) {
                 payload = getPayload();
                 payload.payment_method = "LOCAL";
                 payload.bank_country_code = "CN";
-                payload.account_number = randomString(getRandomInt(1, 7));
+                payload.account_number = randomString(7);
                 payload.swift_code = getSwiftCode(payload.bank_country_code);
                 postAndVerify(payload, 400, {"error":"Length of account_number should be between 8 and 20 when bank_country_code is \'CN\'"}, done);
             });
 
-            it('Verify CN Account Number Length(21 - 30)', function(done) {
+            it('Verify CN Account Number Length(21)', function(done) {
                 payload = getPayload();
                 payload.payment_method = "LOCAL";
                 payload.bank_country_code = "CN";
-                payload.account_number = randomString(getRandomInt(21, 30));
+                payload.account_number = randomString(21);
                 payload.swift_code = getSwiftCode(payload.bank_country_code);
                 postAndVerify(payload, 400, {"error":"Length of account_number should be between 8 and 20 when bank_country_code is \'CN\'"}, done);
             });
