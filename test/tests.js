@@ -50,7 +50,7 @@ describe('Test Submit Bank Account API', function() {
         });
     });
 
-    describe('Test Invalid Inputs ', function() {
+    describe('Test Invalid Bank Account Inputs ', function() {
         describe('Test Invalid Country Code / Payment Method', function() {
             it('Submit Invalid Payment Method', function(done) {
                 payload.payment_method = randomString(5).toUpperCase();

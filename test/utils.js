@@ -57,7 +57,8 @@ module.exports = function() {
 	};
 
 	this.postAndVerify = function (obj, expectedStatus, expectedBody, done) {
-		chai.request('http://preview.airwallex.com:30001').post('/bank')
+		chai.request('http://preview.airwallex.com:30001')
+			.post('/bank')
 			.send(obj)
 			.end(function (err, res) {
 				try {
@@ -66,6 +67,8 @@ module.exports = function() {
 					done();
 				}
 				catch (e) {
+					var payload = "\nPayload: " + JSON.stringify(obj) + "\n";
+					e.message = payload + e.message;
 					done(e)
 				}
 		});
