@@ -1,5 +1,5 @@
 {
-  "name": "bank-api-tests",
+  "name": "bank-account-api-tests",
   "private": true,
   "scripts": {
     "test": "mocha --reporter mochawesome --reporter-options reportDir=report,reportFilename=results,json=false,quiet=true"
