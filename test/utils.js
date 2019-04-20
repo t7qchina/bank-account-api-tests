@@ -1,13 +1,3 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var chaiJsonEqual = require('chai-json-equal');
-var addContext = require('mochawesome/addContext');
-var should = chai.should();
-var expect = chai.expect;
-
-chai.use(chaiJsonEqual);
-chai.use(chaiHttp);
-
 module.exports = function () {
 	this.getRandomElement = function (array) {
 		return array[getRandomInt(0, array.length)];
@@ -37,21 +27,4 @@ module.exports = function () {
 		}
 		return string + this;
 	};
-
-	this.postAndVerify = function (test, obj, expectedStatus, expectedBody, done) {
-		chai.request('http://preview.airwallex.com:30001')
-			.post('/bank')
-			.send(obj)
-			.end(function (err, res) {
-				addContext(test, "Payload:\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
-				try {
-					res.body.should.jsonEqual(expectedBody);
-					expect(res).to.have.status(expectedStatus);
-					done();
-				}
-				catch (e) {
-					done(e)
-				}
-			});
-	}
 }
