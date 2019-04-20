@@ -43,7 +43,7 @@ module.exports = function() {
 			.post('/bank')
 			.send(obj)
 			.end(function (err, res) {
-                addContext(test, "Payload:\n\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
+                addContext(test, "Payload:\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
 				try {
 					res.body.should.jsonEqual(expectedBody);
 					expect(res).to.have.status(expectedStatus);
