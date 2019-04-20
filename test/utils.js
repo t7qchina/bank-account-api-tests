@@ -1,7 +1,6 @@
 module.exports = function() { 
 	var chai = require('chai');
 	var chaiHttp = require('chai-http');
-	var assert = require('assert');
 	var chaiJsonEqual = require('chai-json-equal');
 	var should = chai.should();
 	var expect = chai.expect;
@@ -67,8 +66,6 @@ module.exports = function() {
 					done();
 				}
 				catch (e) {
-					var payload = "\nPayload: " + JSON.stringify(obj) + "\n";
-					e.message = payload + e.message;
 					done(e)
 				}
 		});

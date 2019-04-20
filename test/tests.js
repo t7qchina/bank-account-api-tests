@@ -1,5 +1,5 @@
 require('./utils.js')()
-
+var addContext = require('mochawesome/addContext');
 
 describe('Test Bank Account API', function() {
 
@@ -14,6 +14,7 @@ describe('Test Bank Account API', function() {
         payload.bsb = randomString(6),
         payload.aba = randomString(9)
         payload.swift_code = getSwiftCode(payload.bank_country_code)
+        addContext(this, "Payload\n\n" + JSON.stringify(payload, null, 4));
         done()
     });
 
