@@ -1,13 +1,14 @@
+var chai = require('chai');
+var chaiHttp = require('chai-http');
+var chaiJsonEqual = require('chai-json-equal');
+var addContext = require('mochawesome/addContext');
+var should = chai.should();
+var expect = chai.expect;
+
+chai.use(chaiJsonEqual);
+chai.use(chaiHttp);
+
 module.exports = function() { 
-	var chai = require('chai');
-	var chaiHttp = require('chai-http');
-	var chaiJsonEqual = require('chai-json-equal');
-	var should = chai.should();
-	var expect = chai.expect;
-
-	chai.use(chaiJsonEqual);
-	chai.use(chaiHttp);
-
 	this.getRandomElement = function (array) {
 		return array[getRandomInt(0, array.length)];
 	}
@@ -37,29 +38,12 @@ module.exports = function() {
 		return string + this;
 	};
 
-	this.getSwiftCode = function(country_code)
-	{
-		return randomString(getRandomElement([6, 9])).insert(4, country_code)
-	}
-	
-	this.getPayload = function() {
-		var payload = {
-			"payment_method": getRandomElement(["LOCAL","SWIFT"]),
-			"bank_country_code": getRandomElement(["US", "AU", "CN"]),
-			"account_name": randomString(getRandomInt(2, 10)),
-			"account_number": randomString(getRandomInt(8, 9)),
-			"bsb": randomString(6),
-			"aba": randomString(9)
-		}
-		payload.swift_code = getSwiftCode(payload.bank_country_code)
-		return payload;
-	};
-
-	this.postAndVerify = function (obj, expectedStatus, expectedBody, done) {
+	this.postAndVerify = function (test, obj, expectedStatus, expectedBody, done) {
 		chai.request('http://preview.airwallex.com:30001')
 			.post('/bank')
 			.send(obj)
 			.end(function (err, res) {
+                addContext(test, "Payload:\n\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
 				try {
 					res.body.should.jsonEqual(expectedBody);
 					expect(res).to.have.status(expectedStatus);
@@ -69,5 +53,5 @@ module.exports = function() {
 					done(e)
 				}
 		});
-	}
+    }
 }
