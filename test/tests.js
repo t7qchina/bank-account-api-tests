@@ -47,31 +47,31 @@ describe('Test Bank Account API', function () {
     });
 
     describe('Test Valid Bank Account Inputs', function () {
-        it('Submit Valid SWIFT Account', function (done) {
+        it('Verify Valid SWIFT Account', function (done) {
             payload.payment_method = "SWIFT";
             postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Submit Valid LOCAL Account', function (done) {
+        it('Verify Valid LOCAL Account', function (done) {
             payload.payment_method = "LOCAL";
             postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Submit Valid US Account', function (done) {
+        it('Verify Valid US Account', function (done) {
             payload.bank_country_code = "US";
             payload.account_number = randomString(getRandomInt(1, 17));
             payload.swift_code = getSwiftCode(payload.bank_country_code),
                 postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Submit Valid AU Account', function (done) {
+        it('Verify Valid AU Account', function (done) {
             payload.bank_country_code = "AU";
             payload.account_number = randomString(getRandomInt(6, 9));
             payload.swift_code = getSwiftCode(payload.bank_country_code);
             postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Submit Valid CN Account', function (done) {
+        it('Verify Valid CN Account', function (done) {
             payload.bank_country_code = "CN";
             payload.account_number = randomString(getRandomInt(8, 20));
             payload.swift_code = getSwiftCode(payload.bank_country_code),
@@ -266,6 +266,12 @@ describe('Test Bank Account API', function () {
             it('Verify SWIFT w/ Invalid Lower Case Country Code', function (done) {
                 payload.payment_method = "SWIFT";
                 payload.swift_code = randomString(getRandomElement([6, 9])).insert(4, payload.bank_country_code.toLowerCase())
+                postAndVerify(this, payload, 400, { "error": "The swift code is not valid for the given bank country code: " + payload.bank_country_code }, done);
+            });
+
+            it('Verify SWIFT Code Only Contains Spaces', function (done) {
+                payload.payment_method = "SWIFT";
+                payload.swift_code = "    " + payload.bank_country_code + "  ";
                 postAndVerify(this, payload, 400, { "error": "The swift code is not valid for the given bank country code: " + payload.bank_country_code }, done);
             });
         });
