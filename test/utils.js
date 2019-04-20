@@ -8,7 +8,7 @@ var expect = chai.expect;
 chai.use(chaiJsonEqual);
 chai.use(chaiHttp);
 
-module.exports = function() { 
+module.exports = function () {
 	this.getRandomElement = function (array) {
 		return array[getRandomInt(0, array.length)];
 	}
@@ -43,7 +43,7 @@ module.exports = function() {
 			.post('/bank')
 			.send(obj)
 			.end(function (err, res) {
-                addContext(test, "Payload:\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
+				addContext(test, "Payload:\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
 				try {
 					res.body.should.jsonEqual(expectedBody);
 					expect(res).to.have.status(expectedStatus);
@@ -52,6 +52,6 @@ module.exports = function() {
 				catch (e) {
 					done(e)
 				}
-		});
-    }
+			});
+	}
 }
