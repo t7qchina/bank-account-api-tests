@@ -1,7 +1,7 @@
 require('./utils.js')()
 
 
-describe('Test Submit Bank Account API', function() {
+describe('Test Bank Account API', function() {
 
     var payload = {}
     success = {"success": "Bank details saved"};

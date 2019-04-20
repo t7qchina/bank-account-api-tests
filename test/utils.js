@@ -62,8 +62,8 @@ module.exports = function() {
 			.send(obj)
 			.end(function (err, res) {
 				try {
-					expect(res).to.have.status(expectedStatus);
 					res.body.should.jsonEqual(expectedBody);
+					expect(res).to.have.status(expectedStatus);
 					done();
 				}
 				catch (e) {
