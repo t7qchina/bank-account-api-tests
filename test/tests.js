@@ -81,12 +81,12 @@ describe('Test Bank Account API', function () {
 
     describe('Test Invalid Bank Account Inputs ', function () {
         describe('Test Invalid Country Code / Payment Method', function () {
-            it('Submit Invalid Payment Method', function (done) {
+            it('Verify Invalid Payment Method', function (done) {
                 payload.payment_method = randomString(5).toUpperCase();
                 postAndVerify(this, payload, 400, { "error": "'payment_method' field required, the value should be either 'LOCAL' or 'SWIFT'" }, done);
             });
 
-            it('Submit Invalid Country Code', function (done) {
+            it('Verify Invalid Country Code', function (done) {
                 payload.bank_country_code = randomString(2).toUpperCase();
                 payload.swift_code = getSwiftCode(payload.bank_country_code)
                 postAndVerify(this, payload, 400, { "error": "'bank_country_code' is required, and should be one of 'US', 'AU', or 'CN'" }, done);
@@ -103,8 +103,18 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "\'account_name\' is required" }, done);
             });
 
+            it('Verify Missing account_name only contains spaces', function (done) {
+                payload.account_name = "  "
+                postAndVerify(this, payload, 400, { "error": "\'account_name\' is required" }, done);
+            });
+
             it('Verify Missing account_number', function (done) {
                 delete payload.account_number
+                postAndVerify(this, payload, 400, { "error": "\'account_number\' is required" }, done);
+            });
+
+            it('Verify Missing account_number only contains spaces', function (done) {
+                payload.account_number = "        "
                 postAndVerify(this, payload, 400, { "error": "\'account_number\' is required" }, done);
             });
 
@@ -203,11 +213,27 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "\'bsb\' is required when bank country code is \'AU\'" }, done);
             });
 
+            it('Verify AU Account w/ bsb field only contains spaces', function (done) {
+                payload.payment_method = "LOCAL";
+                payload.bank_country_code = "AU";
+                payload.swift_code = getSwiftCode(payload.bank_country_code);
+                payload.bsb = "      ";
+                postAndVerify(this, payload, 400, { "error": "\'bsb\' is required when bank country code is \'AU\'" }, done);
+            });
+
             it('Verify US Account w/o aba field', function (done) {
                 payload.payment_method = "LOCAL";
                 payload.bank_country_code = "US";
                 payload.swift_code = getSwiftCode(payload.bank_country_code);
                 delete payload.aba
+                postAndVerify(this, payload, 400, { "error": "\'aba\' is required when bank country code is \'US\'" }, done);
+            });
+
+            it('Verify US Account w/ aba field only contains spaces', function (done) {
+                payload.payment_method = "LOCAL";
+                payload.bank_country_code = "US";
+                payload.swift_code = getSwiftCode(payload.bank_country_code);
+                payload.aba = "         "
                 postAndVerify(this, payload, 400, { "error": "\'aba\' is required when bank country code is \'US\'" }, done);
             });
         });
