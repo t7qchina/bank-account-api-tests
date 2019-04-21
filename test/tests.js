@@ -11,13 +11,13 @@ describe('Test Bank Account API', function () {
     }
 
     beforeEach(function (done) {
-        payload.payment_method = getRandomElement(["LOCAL", "SWIFT"]),
-            payload.bank_country_code = getRandomElement(["US", "AU", "CN"]),
-            payload.account_name = randomString(getRandomInt(2, 10)),
-            payload.account_number = randomString(getRandomInt(8, 9)),
-            payload.bsb = randomString(6),
-            payload.aba = randomString(9)
-        payload.swift_code = getSwiftCode(payload.bank_country_code)
+        payload.payment_method = getRandomElement(["LOCAL", "SWIFT"]);
+        payload.bank_country_code = getRandomElement(["US", "AU", "CN"]);
+        payload.account_name = randomString(getRandomInt(2, 10));
+        payload.account_number = randomString(getRandomInt(8, 9));
+        payload.bsb = randomString(6);
+        payload.aba = randomString(9);
+        payload.swift_code = getSwiftCode(payload.bank_country_code);
         done()
     });
 
