@@ -39,8 +39,8 @@ module.exports = function () {
 		return string + this;
 	};
 
-	Object.prototype.getFormattedString = function () {
-		return JSON.stringify(this, Object.keys(this).sort(), 4)
+	function getFormattedString(obj) {
+		return JSON.stringify(obj, Object.keys(obj).sort(), 4)
 	};
 
 	this.postAndVerify = function (test, obj, expectedStatus, expectedBody, done) {
@@ -51,19 +51,19 @@ module.exports = function () {
 				try {
 					res.body.should.jsonEqual(expectedBody);
 					expect(res).to.have.status(expectedStatus);
-					addContext(test, "Payload:\n" + obj.getFormattedString());
+					addContext(test, "Payload:\n" + getFormattedString(obj));
 					done();
 				}
 				catch (e) {
 					addContext(test,
 						"URL:\n" + environments.ENDPOINT + environments.API + "\n\n" +
-						"Payload:\n" + obj.getFormattedString() + "\n\n" +
+						"Payload:\n" + getFormattedString(obj) + "\n\n" +
 						"Expected Response:\n" +
 						"HTTP Code: " + expectedStatus + "\n" +
-						"Body:\n" + expectedBody.getFormattedString() + "\n\n" +
+						"Body:\n" + getFormattedString(expectedBody) + "\n\n" +
 						"Actual Response:\n" +
 						"HTTP Code: " + res.status + "\n" +
-						"Body:\n" + res.body.getFormattedString() + "\n\n");
+						"Body:\n" + getFormattedString(res.body));
 					done(e)
 				}
 			});
