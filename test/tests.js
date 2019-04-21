@@ -20,13 +20,18 @@ describe('Test Bank Account API', function () {
             .post(environments.API)
             .send(obj)
             .end(function (err, res) {
-                addContext(test, "Payload:\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
                 try {
                     res.body.should.jsonEqual(expectedBody);
                     expect(res).to.have.status(expectedStatus);
+                    addContext(test, "Payload:\n" + obj.getFormattedString());
                     done();
                 }
                 catch (e) {
+                    addContext(test,
+                        "URL:\n" + environments.ENDPOINT + environments.API + "\n\n" +
+                        "Payload:\n" + obj.getFormattedString() + "\n\n" +
+                        "Expected Response:\n" + expectedBody.getFormattedString() + "\n\n" +
+                        "Actual Response:\n" + res.body.getFormattedString());
                     done(e)
                 }
             });

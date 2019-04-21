@@ -27,4 +27,8 @@ module.exports = function () {
 		}
 		return string + this;
 	};
+
+	Object.prototype.getFormattedString = function () {
+		return JSON.stringify(this, Object.keys(this).sort(), 4)
+	};
 }
