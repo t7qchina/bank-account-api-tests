@@ -1,4 +1,5 @@
 require('./utils.js')()
+var environments = require('./environments.js')
 var chai = require('chai');
 var chaiHttp = require('chai-http');
 var chaiJsonEqual = require('chai-json-equal');
@@ -15,8 +16,8 @@ describe('Test Bank Account API', function () {
     success = { "success": "Bank details saved" };
 
     function postAndVerify(test, obj, expectedStatus, expectedBody, done) {
-        chai.request('http://preview.airwallex.com:30001')
-            .post('/bank')
+        chai.request(environments.ENDPOINT)
+            .post(environments.API)
             .send(obj)
             .end(function (err, res) {
                 addContext(test, "Payload:\n" + JSON.stringify(obj, Object.keys(obj).sort(), 4));
