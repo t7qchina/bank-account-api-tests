@@ -136,7 +136,7 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "\'account_name\' is required" }, done);
             });
 
-            it('Verify Missing account_name only contains spaces', function (done) {
+            it('Verify account_name only contains spaces', function (done) {
                 payload.account_name = randomString(getRandomInt(2, 10), " ");
                 postAndVerify(this, payload, 400, { "error": "\'account_name\' is required" }, done);
             });
@@ -146,7 +146,7 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "\'account_number\' is required" }, done);
             });
 
-            it('Verify Missing account_number only contains spaces', function (done) {
+            it('Verify account_number only contains spaces', function (done) {
                 payload.account_number = randomString(getRandomInt(8, 9), " ");
                 postAndVerify(this, payload, 400, { "error": "\'account_number\' is required" }, done);
             });
