@@ -21,35 +21,93 @@ describe('Test Bank Account API', function () {
     });
 
     describe('Test Valid Bank Account Inputs', function () {
-        it('Verify Valid SWIFT Account', function (done) {
+        it('Verify Valid Random SWIFT Account', function (done) {
             payload.payment_method = "SWIFT";
             postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Verify Valid LOCAL Account', function (done) {
+        it('Verify Valid Random LOCAL Account', function (done) {
             payload.payment_method = "LOCAL";
             postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Verify Valid US Account', function (done) {
+        it('Verify Valid Random US Account', function (done) {
             payload.bank_country_code = "US";
             payload.account_number = randomString(getRandomInt(1, 17));
             payload.swift_code = getSwiftCode(payload.bank_country_code);
             postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Verify Valid AU Account', function (done) {
+        it('Verify Valid Random AU Account', function (done) {
             payload.bank_country_code = "AU";
             payload.account_number = randomString(getRandomInt(6, 9));
             payload.swift_code = getSwiftCode(payload.bank_country_code);
             postAndVerify(this, payload, 200, success, done);
         });
 
-        it('Verify Valid CN Account', function (done) {
+        it('Verify Valid Random CN Account', function (done) {
             payload.bank_country_code = "CN";
             payload.account_number = randomString(getRandomInt(8, 20));
-            payload.swift_code = getSwiftCode(payload.bank_country_code),
-                postAndVerify(this, payload, 200, success, done);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify Long Account Name Length (10)', function (done) {
+            payload.account_name = randomString(10);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify Short Account Name Length (2)', function (done) {
+            payload.account_name = randomString(2);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify Long US Account Number Length(1)', function (done) {
+            payload.payment_method = "LOCAL";
+            payload.bank_country_code = "US";
+            payload.account_number = randomString(1);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify Long US Account Number Length(17)', function (done) {
+            payload.payment_method = "LOCAL";
+            payload.bank_country_code = "US";
+            payload.account_number = randomString(17);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify Short AU Account Number Length(6)', function (done) {
+            payload.payment_method = "LOCAL";
+            payload.bank_country_code = "AU";
+            payload.account_number = randomString(6);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify Long AU Account Number Length(9)', function (done) {
+            payload.payment_method = "LOCAL";
+            payload.bank_country_code = "AU";
+            payload.account_number = randomString(9);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify CN Account Number Length(8)', function (done) {
+            payload.payment_method = "LOCAL";
+            payload.bank_country_code = "CN";
+            payload.account_number = randomString(8);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
+        });
+
+        it('Verify CN Account Number Length(20)', function (done) {
+            payload.payment_method = "LOCAL";
+            payload.bank_country_code = "CN";
+            payload.account_number = randomString(20);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
         });
     });
 
@@ -195,6 +253,14 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "\'bsb\' is required when bank country code is \'AU\'" }, done);
             });
 
+            it('Verify AU Account w/ null bsb field', function (done) {
+                payload.payment_method = "LOCAL";
+                payload.bank_country_code = "AU";
+                payload.swift_code = getSwiftCode(payload.bank_country_code);
+                payload.bsb = null;
+                postAndVerify(this, payload, 400, { "error": "\'bsb\' is required when bank country code is \'AU\'" }, done);
+            });
+
             it('Verify US Account w/o aba field', function (done) {
                 payload.payment_method = "LOCAL";
                 payload.bank_country_code = "US";
@@ -208,6 +274,14 @@ describe('Test Bank Account API', function () {
                 payload.bank_country_code = "US";
                 payload.swift_code = getSwiftCode(payload.bank_country_code);
                 payload.aba = "         "
+                postAndVerify(this, payload, 400, { "error": "\'aba\' is required when bank country code is \'US\'" }, done);
+            });
+
+            it('Verify US Account w/ null aba field', function (done) {
+                payload.payment_method = "LOCAL";
+                payload.bank_country_code = "US";
+                payload.swift_code = getSwiftCode(payload.bank_country_code);
+                payload.aba = null;
                 postAndVerify(this, payload, 400, { "error": "\'aba\' is required when bank country code is \'US\'" }, done);
             });
         });
@@ -231,6 +305,12 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "\'swift_code\' is required when payment method is \'SWIFT\'" }, done);
             });
 
+            it('Verify SWIFT w/ Null SWIFT Code', function (done) {
+                payload.payment_method = "SWIFT";
+                payload.swift_code = null
+                postAndVerify(this, payload, 400, { "error": "\'swift_code\' is required when payment method is \'SWIFT\'" }, done);
+            });
+
             it('Verify w/o SWIFT Code', function (done) {
                 payload.payment_method = "SWIFT";
                 delete payload.swift_code;
@@ -243,7 +323,7 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "The swift code is not valid for the given bank country code: " + payload.bank_country_code }, done);
             });
 
-            it('Verify SWIFT Code Only Contains Spaces', function (done) {
+            it('Verify SWIFT Code Only Contains Spaces and Country Code', function (done) {
                 payload.payment_method = "SWIFT";
                 payload.swift_code = "    " + payload.bank_country_code + "  ";
                 postAndVerify(this, payload, 400, { "error": "The swift code is not valid for the given bank country code: " + payload.bank_country_code }, done);
