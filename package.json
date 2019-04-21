@@ -2,7 +2,7 @@
   "name": "bank-account-api-tests",
   "private": true,
   "scripts": {
-    "test": "mocha --reporter mochawesome --reporter-options reportDir=report,reportFilename=results,json=false,quiet=true"
+    "test": "mocha --timeout 5000 --reporter mochawesome --reporter-options reportDir=report,reportFilename=results,json=false,quiet=true"
   },
   "devDependencies": {
     "assert": "^1.4.1",

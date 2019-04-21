@@ -30,8 +30,12 @@ describe('Test Bank Account API', function () {
                     addContext(test,
                         "URL:\n" + environments.ENDPOINT + environments.API + "\n\n" +
                         "Payload:\n" + obj.getFormattedString() + "\n\n" +
-                        "Expected Response:\n" + expectedBody.getFormattedString() + "\n\n" +
-                        "Actual Response:\n" + res.body.getFormattedString());
+                        "Expected Response:\n" +
+                        "HTTP Code: " + expectedStatus + "\n" +
+                        "Body:\n" + expectedBody.getFormattedString() + "\n\n" +
+                        "Actual Response:\n" +
+                        "HTTP Code: " + res.status + "\n" +
+                        "Body:\n" + res.body.getFormattedString() + "\n\n");
                     done(e)
                 }
             });
