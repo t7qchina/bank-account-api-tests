@@ -1,45 +1,9 @@
 require('./utils.js')()
-var environments = require('./environments.js')
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var chaiJsonEqual = require('chai-json-equal');
-var addContext = require('mochawesome/addContext');
-var should = chai.should();
-var expect = chai.expect;
-
-chai.use(chaiJsonEqual);
-chai.use(chaiHttp);
 
 describe('Test Bank Account API', function () {
 
     var payload = {}
     success = { "success": "Bank details saved" };
-
-    function postAndVerify(test, obj, expectedStatus, expectedBody, done) {
-        chai.request(environments.ENDPOINT)
-            .post(environments.API)
-            .send(obj)
-            .end(function (err, res) {
-                try {
-                    res.body.should.jsonEqual(expectedBody);
-                    expect(res).to.have.status(expectedStatus);
-                    addContext(test, "Payload:\n" + obj.getFormattedString());
-                    done();
-                }
-                catch (e) {
-                    addContext(test,
-                        "URL:\n" + environments.ENDPOINT + environments.API + "\n\n" +
-                        "Payload:\n" + obj.getFormattedString() + "\n\n" +
-                        "Expected Response:\n" +
-                        "HTTP Code: " + expectedStatus + "\n" +
-                        "Body:\n" + expectedBody.getFormattedString() + "\n\n" +
-                        "Actual Response:\n" +
-                        "HTTP Code: " + res.status + "\n" +
-                        "Body:\n" + res.body.getFormattedString() + "\n\n");
-                    done(e)
-                }
-            });
-    }
 
     function getSwiftCode(country_code) {
         return randomString(getRandomElement([6, 9])).insert(4, country_code)
@@ -70,8 +34,8 @@ describe('Test Bank Account API', function () {
         it('Verify Valid US Account', function (done) {
             payload.bank_country_code = "US";
             payload.account_number = randomString(getRandomInt(1, 17));
-            payload.swift_code = getSwiftCode(payload.bank_country_code),
-                postAndVerify(this, payload, 200, success, done);
+            payload.swift_code = getSwiftCode(payload.bank_country_code);
+            postAndVerify(this, payload, 200, success, done);
         });
 
         it('Verify Valid AU Account', function (done) {
