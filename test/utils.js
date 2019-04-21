@@ -25,7 +25,7 @@ module.exports = function () {
 			var randomPoz = getRandomInt(0, charSet.length)
 			randomString += charSet.substring(randomPoz, randomPoz + 1);
 		}
-		return randomString.trim();
+		return randomString;
 	}
 
 	this.getRandomElement = function (array) {

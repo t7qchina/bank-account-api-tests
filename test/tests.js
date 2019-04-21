@@ -5,8 +5,9 @@ describe('Test Bank Account API', function () {
     var payload = {}
     success = { "success": "Bank details saved" };
 
-    function getSwiftCode(country_code) {
-        return randomString(getRandomElement([6, 9])).insert(4, country_code)
+    function getSwiftCode(country_code, str) {
+        str = str || randomString(getRandomElement([6, 9]));
+        return str.insert(4, country_code)
     }
 
     beforeEach(function (done) {
@@ -293,7 +294,7 @@ describe('Test Bank Account API', function () {
                 postAndVerify(this, payload, 400, { "error": "The swift code is not valid for the given bank country code: " + payload.bank_country_code }, done);
             });
 
-            it('Verify SWIFT Code w/o Invalid Length', function (done) {
+            it('Verify Country Code in Invalid Position in SWIFT Code', function (done) {
                 payload.payment_method = "SWIFT";
                 payload.swift_code = randomString(0, 2) + payload.bank_country_code + randomString(0, 7);
                 postAndVerify(this, payload, 400, { "error": "Length of \'swift_code\' should be either 8 or 11" }, done);
@@ -319,13 +320,13 @@ describe('Test Bank Account API', function () {
 
             it('Verify SWIFT w/ Invalid Lower Case Country Code', function (done) {
                 payload.payment_method = "SWIFT";
-                payload.swift_code = randomString(getRandomElement([6, 9])).insert(4, payload.bank_country_code.toLowerCase())
+                payload.swift_code = getSwiftCode(payload.bank_country_code.toLowerCase(), randomString(getRandomElement([6, 9])));
                 postAndVerify(this, payload, 400, { "error": "The swift code is not valid for the given bank country code: " + payload.bank_country_code }, done);
             });
 
             it('Verify SWIFT Code Only Contains Spaces and Country Code', function (done) {
                 payload.payment_method = "SWIFT";
-                payload.swift_code = "    " + payload.bank_country_code + "  ";
+                payload.swift_code = getSwiftCode(payload.bank_country_code, randomString(getRandomElement([6, 9]), " "));
                 postAndVerify(this, payload, 400, { "error": "The swift code is not valid for the given bank country code: " + payload.bank_country_code }, done);
             });
         });
